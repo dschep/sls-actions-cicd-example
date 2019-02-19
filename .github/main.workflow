@@ -24,17 +24,17 @@ action "serverless deploy" {
 
 workflow "Remove" {
   on = "delete"
-  resolves = ["serverless/github-action@master"]
+  resolves = ["serverless remove"]
 }
 
-action "GitHub Action for npm" {
+action "npm i" {
   uses = "actions/npm@59b64a598378f31e49cb76f27d6f3312b582f680"
   args = "install"
 }
 
-action "serverless/github-action@master" {
+action "serverless remove" {
   uses = "serverless/github-action@master"
-  needs = ["GitHub Action for npm"]
   args = "remove"
   secrets = ["SERVERLESS_ACCESS_KEY"]
+  needs = ["npm i"]
 }
