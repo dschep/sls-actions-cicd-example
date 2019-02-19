@@ -11,7 +11,9 @@
 #
 # Happy Coding!
 
-service: sls-actions-cicd-example # NOTE: update this with your service name
+service: sls-actions-cicd-example
+tenant: dschep
+app: sls-actions-cicd-example
 
 # You can pin your service to only deploy with a specific Serverless version
 # Check out our docs for more details
@@ -21,6 +23,7 @@ provider:
   name: aws
   runtime: nodejs8.10
   stage: ${file(./github-action-stage-helper.js), 'none'}
+  credentials: ${secrets:aws-sls-personal}
 
 # you can overwrite defaults here
 #  stage: dev
@@ -103,3 +106,6 @@ functions:
 #     NewOutput:
 #       Description: "Description for the output"
 #       Value: "Some output value"
+
+plugins:
+  - '@serverless/enterprise-plugin'
