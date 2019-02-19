@@ -20,6 +20,7 @@ service: sls-actions-cicd-example # NOTE: update this with your service name
 provider:
   name: aws
   runtime: nodejs8.10
+  stage: ${file(./github-action-stage-helper.js)}
 
 # you can overwrite defaults here
 #  stage: dev
