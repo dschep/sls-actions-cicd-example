@@ -1,1 +1,4 @@
-module.exports = () => process.env.GITHUB_REF && process.env.GITHUB_REF.split('refs/heads/')[1]
+const fs = require('fs')
+
+module.exports = () => process.env.GITHUB_EVENT_PATH && JSON.parse(
+    fs.readFileSync(process.env.GITHUB_EVENT_PATH)).ref.split('refs/heads/')[1]
