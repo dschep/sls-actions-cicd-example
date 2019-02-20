@@ -1,10 +1,10 @@
 workflow "Deploy" {
   on = "push"
-  resolves = ["serverless remove"]
+  resolves = ["serverless deploy"]
 }
 workflow "Remove" {
   on = "push"
-  resolves = ["serverless deploy"]
+  resolves = ["serverless remove"]
 }
 
 action "npm install" {
