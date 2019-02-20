@@ -1,4 +1,4 @@
-workflow "Deploy" {
+workflow "Deploy branch to stage of same name" {
   on = "push"
   resolves = [
     "serverless deploy",
