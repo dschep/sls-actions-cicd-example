@@ -1,9 +1,10 @@
-workflow "Deploy branch to stage of same name" {
+workflow "Deploy" {
   on = "push"
-  resolves = [
-    "serverless deploy",
-    "serverless remove"
-  ]
+  resolves = ["serverless remove"]
+}
+workflow "Remove" {
+  on = "push"
+  resolves = ["serverless deploy"]
 }
 
 action "npm install" {
