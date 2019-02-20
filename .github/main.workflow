@@ -1,6 +1,9 @@
 workflow "Deploy" {
   on = "push"
-  resolves = ["serverless deploy"]
+  resolves = [
+    "serverless deploy",
+    "serverless remove"
+  ]
 }
 
 action "npm install" {
@@ -10,7 +13,7 @@ action "npm install" {
 
 action "test" {
   uses = "serverless/github-action@master"
-  needs = ["npm install"]
+  needs = ["On non-deleted branches"]
   args = "invoke local -f hello"
   secrets = ["SERVERLESS_ACCESS_KEY"]
 }
@@ -22,19 +25,21 @@ action "serverless deploy" {
   secrets = ["SERVERLESS_ACCESS_KEY"]
 }
 
-workflow "Remove" {
-  on = "delete"
-  resolves = ["serverless remove"]
-}
-
-action "npm i" {
-  uses = "actions/npm@59b64a598378f31e49cb76f27d6f3312b582f680"
-  args = "install"
-}
-
 action "serverless remove" {
   uses = "serverless/github-action@master"
   args = "remove"
   secrets = ["SERVERLESS_ACCESS_KEY"]
-  needs = ["npm i"]
+  needs = ["On deleted branches"]
+}
+
+action "On deleted branches" {
+  uses = "dschep/filter-event-action@master"
+  needs = ["npm install"]
+  args = "event.deleted"
+}
+
+action "On non-deleted branches" {
+  uses = "dschep/filter-event-action@master"
+  needs = ["npm install"]
+  args = "!event.deleted"
 }
