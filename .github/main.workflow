@@ -62,7 +62,7 @@ action "GitHub Action for npm" {
 
 action "On open & syncronize" {
   uses = "dschep/filter-event-action@master"
-  args = "['synchronize', 'opened'].includes(event.action)"
+  args = "['synchronize','opened'].includes(event.action)"
 }
 
 action "GitHub Action for npm-2" {
