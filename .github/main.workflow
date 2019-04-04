@@ -2,9 +2,10 @@ workflow "Deploy" {
   on = "push"
   resolves = ["serverless deploy"]
 }
+
 workflow "Remove" {
   on = "push"
-  resolves = ["serverless remove"]
+  resolves = ["Comment on PR"]
 }
 
 action "npm install" {
@@ -47,4 +48,10 @@ action "On deleted branches" {
 action "On non-deleted branches" {
   uses = "dschep/filter-event-action@master"
   args = "!event.deleted"
+}
+
+action "Comment on PR" {
+  uses = "./comment"
+  needs = ["serverless remove"]
+  secrets = ["GITHUB_TOKEN", "SERVERLESS_ACCESS_KEY"]
 }
