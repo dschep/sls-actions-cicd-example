@@ -12,6 +12,3 @@ module.exports = () => {
     return event.ref
   }
 }
-
-console.log(process.env.GITHUB_EVENT_NAME)
-console.log(require('fs').readFileSync(process.env.GITHUB_EVENT_PATH).toString())
