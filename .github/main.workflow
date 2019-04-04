@@ -1,11 +1,11 @@
 workflow "Deploy" {
   on = "push"
-  resolves = ["serverless deploy"]
+  resolves = ["Comment on PR"]
 }
 
 workflow "Remove" {
   on = "push"
-  resolves = ["Comment on PR"]
+  resolves = ["serverless remove"]
 }
 
 action "npm install" {
@@ -52,6 +52,6 @@ action "On non-deleted branches" {
 
 action "Comment on PR" {
   uses = "./comment"
-  needs = ["serverless remove"]
+  needs = ["serverless deploy"]
   secrets = ["GITHUB_TOKEN", "SERVERLESS_ACCESS_KEY"]
 }
