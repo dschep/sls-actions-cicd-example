@@ -60,21 +60,32 @@ action "GitHub Action for npm" {
   args = "install"
 }
 
-action "GitHub Action for npm-1" {
+action "On open & syncronize" {
+  uses = "dschep/filter-event-action@master"
+  args = "['synchronize', 'opened'].includes(event.action)"
+}
+
+action "GitHub Action for npm-2" {
   uses = "actions/npm@59b64a598378f31e49cb76f27d6f3312b582f680"
-  needs = ["GitHub Action for npm"]
+  needs = ["On open & syncronize"]
+  args = "install"
+}
+
+action "GitHub Action for npm-3" {
+  uses = "actions/npm@59b64a598378f31e49cb76f27d6f3312b582f680"
+  needs = ["GitHub Action for npm-2"]
   args = "test"
 }
 
-action "serverless/github-action@master" {
+action "sls deploy" {
   uses = "serverless/github-action@master"
-  needs = ["GitHub Action for npm-1"]
+  needs = ["GitHub Action for npm-3"]
   args = "deploy"
   secrets = ["SERVERLESS_ACCESS_KEY"]
 }
 
 action "Comment on PR" {
   uses = "./comment"
-  needs = ["serverless/github-action@master"]
+  needs = ["sls deploy"]
   secrets = ["GITHUB_TOKEN", "SERVERLESS_ACCESS_KEY"]
 }
