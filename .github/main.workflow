@@ -50,8 +50,14 @@ action "On non-deleted branches" {
   args = "!event.deleted"
 }
 
+action "On Pull Requests" {
+  uses = "dschep/filter-event-action@master"
+  needs = ["serverless deploy"]
+  args = "event.pull_request"
+}
+
 action "Comment on PR" {
   uses = "./comment"
-  needs = ["serverless deploy"]
+  needs = ["On Pull Requests"]
   secrets = ["GITHUB_TOKEN", "SERVERLESS_ACCESS_KEY"]
 }
