@@ -1,15 +1,10 @@
 FROM node:10-slim
 
 
-LABEL version="1.0.0"
-LABEL repository="https://github.com/serverless/github-action"
-LABEL homepage="https://github.com/serverless/github-action"
-LABEL maintainer="Serverless, Inc. <hello@serverless.com> (https://serverless.com)"
-
-LABEL "com.github.actions.name"="Serverless"
-LABEL "com.github.actions.description"="Wraps the Serverless Frameork to enable common Serverless commands."
-LABEL "com.github.actions.icon"="zap"
-LABEL "com.github.actions.color"="red"
+LABEL "com.github.actions.name"="Comment on PR"
+LABEL "com.github.actions.description"="Comments with sls info output on the PR"
+LABEL "com.github.actions.icon"="comment"
+LABEL "com.github.actions.color"="blue"
 
 RUN apt update && apt install -y curl && rm -rf /var/lib/apt/lists/*
 RUN npm i -g serverless
