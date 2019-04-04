@@ -1,6 +1,6 @@
 workflow "Deploy" {
   on = "push"
-  resolves = ["Comment on PR"]
+  resolves = ["serverless deploy"]
 }
 
 workflow "Remove" {
@@ -50,14 +50,31 @@ action "On non-deleted branches" {
   args = "!event.deleted"
 }
 
-action "On Pull Requests" {
-  uses = "dschep/filter-event-action@master"
-  needs = ["serverless deploy"]
-  args = "event.pull_request"
+workflow "post sls info on PRs" {
+  on = "pull_request"
+  resolves = ["Comment on PR"]
+}
+
+action "GitHub Action for npm" {
+  uses = "actions/npm@59b64a598378f31e49cb76f27d6f3312b582f680"
+  args = "install"
+}
+
+action "GitHub Action for npm-1" {
+  uses = "actions/npm@59b64a598378f31e49cb76f27d6f3312b582f680"
+  needs = ["GitHub Action for npm"]
+  args = "test"
+}
+
+action "serverless/github-action@master" {
+  uses = "serverless/github-action@master"
+  needs = ["GitHub Action for npm-1"]
+  args = "deploy"
+  secrets = ["SERVERLESS_ACCESS_KEY"]
 }
 
 action "Comment on PR" {
   uses = "./comment"
-  needs = ["On Pull Requests"]
+  needs = ["serverless/github-action@master"]
   secrets = ["GITHUB_TOKEN", "SERVERLESS_ACCESS_KEY"]
 }
