@@ -1,0 +1,22 @@
+on: push
+name: Remove
+jobs:
+  onDeletedBranches:
+    name: On deleted branches
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: On deleted branches
+      uses: dschep/filter-event-action@master
+      with:
+        args: event.deleted
+    - name: npm install 2
+      uses: actions/npm@59b64a598378f31e49cb76f27d6f3312b582f680
+      with:
+        args: install
+    - name: serverless remove
+      uses: serverless/github-action@master
+      env:
+        SERVERLESS_ACCESS_KEY: ${{ secrets.SERVERLESS_ACCESS_KEY }}
+      with:
+        args: remove

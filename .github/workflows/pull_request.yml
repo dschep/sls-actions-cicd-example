@@ -1,0 +1,31 @@
+on: pull_request
+name: post sls info on PRs
+jobs:
+  build:
+    name: On open & syncronize
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: On open & syncronize
+      uses: dschep/filter-event-action@master
+      with:
+        args: event.action==='opened'
+    - name: GitHub Action for npm-2
+      uses: actions/npm@59b64a598378f31e49cb76f27d6f3312b582f680
+      with:
+        args: install
+    - name: GitHub Action for npm-3
+      uses: actions/npm@59b64a598378f31e49cb76f27d6f3312b582f680
+      with:
+        args: test
+    - name: sls deploy
+      uses: serverless/github-action@master
+      env:
+        SERVERLESS_ACCESS_KEY: ${{ secrets.SERVERLESS_ACCESS_KEY }}
+      with:
+        args: deploy
+    - name: Comment on PR
+      uses: ./comment
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SERVERLESS_ACCESS_KEY: ${{ secrets.SERVERLESS_ACCESS_KEY }}
