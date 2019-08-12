@@ -2,20 +2,19 @@ on: pull_request
 name: post sls info on PRs
 jobs:
   build:
-    name: On open & syncronize
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
-    - name: On open & syncronize
+    - name: On open & synchronize
       uses: dschep/filter-event-action@master
       with:
-        args: event.action==='opened'
-    - name: GitHub Action for npm-2
-      uses: actions/npm@59b64a598378f31e49cb76f27d6f3312b582f680
+        args: "['opened', 'synchronize'].includes(event.action)"
+    - name: npm install
+      uses: actions/npm@master
       with:
         args: install
-    - name: GitHub Action for npm-3
-      uses: actions/npm@59b64a598378f31e49cb76f27d6f3312b582f680
+    - name: npm test
+      uses: actions/npm@master
       with:
         args: test
     - name: sls deploy
