@@ -12,7 +12,7 @@
 # Happy Coding!
 
 service: sls-actions-cicd-example
-tenant: dschep
+tenant: personal
 app: sls-actions-cicd-example
 
 # You can pin your service to only deploy with a specific Serverless version
@@ -23,7 +23,6 @@ provider:
   name: aws
   runtime: nodejs8.10
   stage: ${file(./github-action-stage-helper.js), 'none'}
-  credentials: ${secrets:aws-sls-personal}
 
 # you can overwrite defaults here
 #  stage: dev
