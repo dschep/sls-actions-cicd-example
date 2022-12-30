@@ -7,7 +7,7 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "@serverless/enterprise-plugin": "^0.2.0",
+    "@serverless/enterprise-plugin": "^4.6.0",
     "jest": "^24.1.0"
   }
 }
